@@ -1,1 +1,137 @@
-<p>create-experiment-form works!</p>
+<!-- <app-top-bar></app-top-bar> -->
+<br>
+<div class="content-section implementation">
+  <!-- <p-toast [style]="{ marginTop: '40px' }"></p-toast> -->
+  <!-- <p-toast [style]="{ marginTop: '40px' }" styleClass="custom-toast" key="custom" position="top-left" key="tl"> -->
+  <!-- </p-toast> -->
+</div>
+
+
+<div class="grid ">
+  &nbsp;<label class="col-2 md-1 sm-1" for="firstname1"><b class="boldExp">Enter experiment name</b></label>
+  <div class="col-5 md-4 sm-4">
+    <input  class="col-10" id="firstname1" [(ngModel)]="experimentName" type="text" pInputText> 
+  </div>
+  <div class="col-1 md-1 sm-1" >
+    <button pButton *ngIf=" name==''  " type="button" label="Create" (click)="createExperiment()"></button>
+  </div>
+</div>
+
+<!-- (click)="addExperiment=true" -->
+
+<div *ngIf="name != ''">
+    <p-panel  *ngFor="let exp of experiment ; let i = index">
+    <div class="grid" >
+        Experiment name:
+        <span class="col-1"></span>
+        <input
+        style="text-align: center;"
+        class="col-4 md-4 sm-4"
+        type="text"
+        name="createExperiment"
+        [(ngModel)]="exp.name"
+        pInputText
+        disabled
+        />
+
+        <button
+        (click)="deleteExperiment(exp.id)"
+        title="Delete Experiment"
+        class="btn btn-link"
+        type="button"
+        >
+            <em class="fa fa-trash text-maroon"></em>
+        </button>
+    </div>
+    <p-card>
+        <div *ngFor="let quest of questions ; let i = index">
+        <div class="grid" >
+        <!-- Ques.{{i+1}} &nbsp; {{quest}} -->
+        <div class="col-8 md-6 sm-4">
+            Ques.{{i+1}} &nbsp; &nbsp;
+            <input 
+            class="col-6"
+            type="text"
+            [name]="'quest'+i"
+            [(ngModel)]="questions[i]"
+            pInputText
+            disabled
+            />
+            </div>
+        </div> 
+        </div>
+    </p-card>
+
+    <div class="ui-fluid">
+        <p-card>
+        <p-header>
+            <!-- Add questions -->
+        </p-header>
+        <p-radioButton name="groupname" value="1" label="Single line" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
+        <p-radioButton name="groupname" value="2" label="Multi line" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
+        <p-radioButton name="groupname" value="3" label="Select from Options" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
+        <div >
+            <p-card>
+            <div class="grid" *ngIf="selectedValue=='1'">
+            <div class="col-8 md-6 sm-4">
+                <input 
+                type="text"
+                name="createques"
+                [(ngModel)]="newQues"
+                pInputText
+                />
+            </div>
+            <div class="col-1 md-1 sm-1">
+                <button pButton type="button" label="add" (click)="createQuestion()" icon="fa fa-plus">
+                <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
+                </button>
+            </div>
+            </div>
+            <div  *ngIf="selectedValue=='2'">
+            <div class="grid">
+                <div class="col-8 md-6 sm-4">
+                <textarea class="p-col" pInputTextarea [rows]="3" [cols]="20" *ngIf="selectedValue=='2'" autoResize="autoResize" [(ngModel)]="newQues"></textarea>
+                </div>
+                <div class="col-1 md-1 sm-1">
+                <button pButton type="button" label="create" (click)="createQuestion()" icon="fa fa-plus">
+                    <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
+                </button>
+                </div>
+            </div>
+            </div>
+            <div *ngIf="selectedValue=='3'">
+                <div *ngFor="let opt of options ; let i = index">
+                <div class="grid" >
+                    <div class="col-6 md-4 sm-3">
+                    {{opt}}
+                    </div>
+                </div>
+                </div>
+                
+                <div class="grid" >
+                <div class="col-8 md-6 sm-4">
+                    <input 
+                    type="text"
+                    name="createOption"
+                    [(ngModel)]="newOption"
+                    pInputText
+                    />
+                </div>
+                <div class="col-1 md-1 sm-1">
+                    <button pButton type="button" label="option" icon="fa fa-plus" (click)="createOption()" >
+                    <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
+                    </button>
+                </div>
+                <div class="col-1 md-1 sm-1">
+                    <button pButton type="button" label="create" (click)="createQuestion()" icon="fa fa-plus">
+                    <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
+                    </button>
+                </div>
+                </div>
+            </div>
+            </p-card>
+        </div>
+        </p-card>
+    </div>
+    </p-panel>
+</div>

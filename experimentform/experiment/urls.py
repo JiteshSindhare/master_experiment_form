@@ -5,7 +5,12 @@ from . import views
 router = DefaultRouter()
 
 urlpatterns = [
-# path('getTradieTasks/<slug:statusNum>',views.getTradieTasks.as_view()
-# ,name='getTradieTasks'),
+    
+path('addExperiment',views.ExperimentView.as_view()
+,name='addExperiment'),
+path('deleteExperiment/<int:pk>',views.ExperimentView.as_view()
+,name='deleteExperiment'),
+path('getExperiment/<int:pk>',views.ExperimentView.as_view()
+,name='getExperiment'),
 
 ]

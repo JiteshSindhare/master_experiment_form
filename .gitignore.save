@@ -1,0 +1,4 @@
+/frontend/experiment-form-frontend/node_modules
+/experimentform/experimentform/.env
+__pycache__/
+

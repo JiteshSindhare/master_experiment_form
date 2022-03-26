@@ -1,1 +1,27 @@
-<p>top-bar works!</p>
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+   <!--------- <title>Responsive Navigation Menu</title>------>
+    <!-- <link rel="stylesheet" href="../../../styles.scss"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <nav>
+      <div class="logo">Experiment form</div>
+      <input type="checkbox" id="click">
+      <label for="click" class="menu-btn">
+        <i class="fas fa-bars"></i>
+      </label>
+      <ul>
+        <!-- <li><a class="active" href="#">Home</a></li> -->
+        <li><a href="/create">Creat Experiment</a></li>
+        <li><a href="/manage">Manage</a></li>
+        <li><a href="/experiment">Experiment</a></li>
+      </ul>
+    </nav>
+    <router-outlet></router-outlet>
+  </body>
+</html>
