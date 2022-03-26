@@ -6,8 +6,8 @@ from rest_framework import status
 import requests
 import logging
 
-from experiment.models import Experiment, Question
-from experiment.serializers import ExperimentSerialzer
+from experiment.models import Experiment, Question, Options, OptionAnswer, Answer
+from experiment.serializers import ExperimentSerialzer, QuestionSerializer, OptionSerializer
 
 # Initialize logger variable
 logger = logging.getLogger(__name__)
@@ -54,7 +54,32 @@ class ExperimentView(APIView):
                 'status_code': status_code,
             }
             return Response(response, status=status_code)
-    
+
+    def put(self,request,pk):
+        """pk: id of experiment whose status you want to change."""
+        try:
+            experiment_instance = Experiment.objects.get(id=pk)
+            experiment_instance.status = 0 if experiment_instance.status == 1 else 1
+            experiment_instance.save()
+            status_code = status.HTTP_200_OK
+            experiment_serialized = ExperimentSerialzer(experiment_instance)
+            response = {
+                'data': experiment_serialized.data,
+                'success': True,
+                'status_code': status_code,
+                'message': 'Experiment status changed successfully',
+            }
+            return Response(response, status=status_code)
+        except Exception as e:
+            logger.error(Error_Occured)
+            logger.exception("message")
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                # 'data':e,
+                'succes': 'False',
+                'status_code': status_code,
+            }
+            return Response(response, status=status_code)
     def delete(self,request,pk):
         """
         pk is id of experiment.
@@ -82,7 +107,6 @@ class ExperimentView(APIView):
     def get(self,request,pk):
         """pk is id of experiment."""
         try:
-            logger.info('~~~~~~~~~~~~~~~~~~IT IS HERE')
             experiment_instance = Experiment.objects.get(id=pk)
             experiment_serialized = ExperimentSerialzer(experiment_instance)
             status_code = status.HTTP_200_OK
@@ -104,3 +128,91 @@ class ExperimentView(APIView):
             }
             return Response(response, status=status_code)
 
+class AllEpxeriment(APIView):
+    def get(self,request):
+        try:
+            experiment_instance = Experiment.objects.all()
+            if Experiment.objects.all().__len__ == 1:
+                experiment_serialized = ExperimentSerialzer(experiment_instance)
+            else:   
+                experiment_serialized = ExperimentSerialzer(experiment_instance,many=True)
+            status_code = status.HTTP_200_OK
+            response = {
+                'data' : experiment_serialized,
+                'success': True,
+                'status_code': status_code,
+                'message': 'Experiment fetched successfully.',
+            }
+            return Response(response, status=status_code)
+        except Exception as e:
+            logger.error(Error_Occured)
+            logger.exception("message")
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                # 'data':e,
+                'succes': 'False',
+                'status_code': status_code,
+            }
+            return Response(response, status=status_code)
+class QuestionView(APIView):
+    def post(self,request,pk):
+        """pk: id of experiment of which this question is part of."""
+        try:
+            question = request.data.get('question','')
+            option_type = int(request.data.get('type',''))
+
+            experiment_instance = Experiment.objects.get(id=pk)
+            question_instance = Question()
+            question_instance.question = question
+            question_instance.experiment_id = experiment_instance
+            question_instance.question_type = option_type
+            question_instance.save()
+
+            status_code = status.HTTP_200_OK
+            question_serialized = QuestionSerializer(question_instance)
+            response = {
+                'data': question_serialized.data,
+                'success': True,
+                'status_code': status_code,
+                'message': 'Question created successfully',
+            }
+            return Response(response, status=status_code)
+        except Exception as e:
+            logger.error(Error_Occured)
+            logger.exception("message")
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                # 'data':e,
+                'succes': 'False',
+                'status_code': status_code,
+            }
+            return Response(response, status=status_code)
+
+class OptionView(APIView):
+    def post(self,request,pk):
+        try:
+            option_name = request.data.get('option_name','')
+            question_instance = Question.objects.get(id=pk)
+            options_instance = Options()
+            options_instance.option_name = option_name
+            options_instance.question_id = question_instance
+            options_instance.save()
+            status_code = status.HTTP_200_OK
+            option_serialized = OptionSerializer(options_instance)
+            response = {
+                'data': option_serialized.data,
+                'success': True,
+                'status_code': status_code,
+                'message': 'Option created successfully',
+            }
+            return Response(response, status=status_code)
+        except Exception as e:
+            logger.error(Error_Occured)
+            logger.exception("message")
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                # 'data':e,
+                'succes': 'False',
+                'status_code': status_code,
+            }
+            return Response(response, status=status_code)

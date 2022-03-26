@@ -36,4 +36,14 @@ export class DataService {
       { headers }
     );
   }
+
+  addQuestion(data,id){
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post<any>(
+      this.backendRoute+'/api/addQuestion/'+id,
+      data,
+      { headers }
+    );
+  }
 }

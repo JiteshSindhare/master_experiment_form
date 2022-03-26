@@ -5,12 +5,24 @@ from . import views
 router = DefaultRouter()
 
 urlpatterns = [
-    
+
 path('addExperiment',views.ExperimentView.as_view()
 ,name='addExperiment'),
+
+path('toggleExperimentStatus',views.ExperimentView.as_view()
+,name='addExperiment'),
+
 path('deleteExperiment/<int:pk>',views.ExperimentView.as_view()
 ,name='deleteExperiment'),
+
+# To fetch detail of any particular experiment.
 path('getExperiment/<int:pk>',views.ExperimentView.as_view()
 ,name='getExperiment'),
+
+# To add question to an experiment.
+path('addQuestion/<int:pk>',views.QuestionView.as_view()),
+
+#To get all experiments.
+path('getAllExperiments',views.AllEpxeriment.as_view())
 
 ]

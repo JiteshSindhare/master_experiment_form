@@ -29,7 +29,7 @@
         class="col-4 md-4 sm-4"
         type="text"
         name="createExperiment"
-        [(ngModel)]="exp.name"
+        [(ngModel)]="exp.experiment_name"
         pInputText
         disabled
         />
@@ -44,21 +44,21 @@
         </button>
     </div>
     <p-card>
-        <div *ngFor="let quest of questions ; let i = index">
-        <div class="grid" >
-        <!-- Ques.{{i+1}} &nbsp; {{quest}} -->
-        <div class="col-8 md-6 sm-4">
-            Ques.{{i+1}} &nbsp; &nbsp;
-            <input 
-            class="col-6"
-            type="text"
-            [name]="'quest'+i"
-            [(ngModel)]="questions[i]"
-            pInputText
-            disabled
-            />
-            </div>
-        </div> 
+        <div *ngFor="let quest of exp.questions ; let i = index">
+            <div class="grid" >
+                <!-- Ques.{{i+1}} &nbsp; {{quest}} -->
+                <div *ngIf="questions[i].question_type== 0 || questions[i].question_type== 1" class="col-8 md-6 sm-4">
+                    Ques.{{i+1}} &nbsp; &nbsp;
+                    <input 
+                    class="col-6"
+                    type="text"
+                    [name]="'quest'+i"
+                    [(ngModel)]="exp[0].questions[i].question"
+                    pInputText
+                    disabled
+                    />
+                </div>
+            </div> 
         </div>
     </p-card>
 
@@ -67,12 +67,12 @@
         <p-header>
             <!-- Add questions -->
         </p-header>
-        <p-radioButton name="groupname" value="1" label="Single line" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
-        <p-radioButton name="groupname" value="2" label="Multi line" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
-        <p-radioButton name="groupname" value="3" label="Select from Options" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
+        <p-radioButton name="groupname" value="0" label="Single line" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
+        <p-radioButton name="groupname" value="1" label="Multi line" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
+        <p-radioButton name="groupname" value="2" label="Select from Options" [(ngModel)]="selectedValue"></p-radioButton>&nbsp;
         <div >
             <p-card>
-            <div class="grid" *ngIf="selectedValue=='1'">
+            <div class="grid" *ngIf="selectedValue=='0'">
             <div class="col-8 md-6 sm-4">
                 <input 
                 type="text"
@@ -82,24 +82,24 @@
                 />
             </div>
             <div class="col-1 md-1 sm-1">
-                <button pButton type="button" label="add" (click)="createQuestion()" icon="fa fa-plus">
+                <button pButton type="button" label="add" (click)="createQuestion(exp.id)" icon="fa fa-plus">
                 <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
                 </button>
             </div>
             </div>
-            <div  *ngIf="selectedValue=='2'">
+            <div  *ngIf="selectedValue=='1'">
             <div class="grid">
                 <div class="col-8 md-6 sm-4">
-                <textarea class="p-col" pInputTextarea [rows]="3" [cols]="20" *ngIf="selectedValue=='2'" autoResize="autoResize" [(ngModel)]="newQues"></textarea>
+                <textarea class="p-col" pInputTextarea [rows]="3" [cols]="20" *ngIf="selectedValue=='1'" autoResize="autoResize" [(ngModel)]="newQues"></textarea>
                 </div>
                 <div class="col-1 md-1 sm-1">
-                <button pButton type="button" label="create" (click)="createQuestion()" icon="fa fa-plus">
+                <button pButton type="button" label="create" (click)="createQuestion(exp.id)" icon="fa fa-plus">
                     <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
                 </button>
                 </div>
             </div>
             </div>
-            <div *ngIf="selectedValue=='3'">
+            <div *ngIf="selectedValue=='2'">
                 <div *ngFor="let opt of options ; let i = index">
                 <div class="grid" >
                     <div class="col-6 md-4 sm-3">
@@ -123,7 +123,7 @@
                     </button>
                 </div>
                 <div class="col-1 md-1 sm-1">
-                    <button pButton type="button" label="create" (click)="createQuestion()" icon="fa fa-plus">
+                    <button pButton type="button" label="create" (click)="createQuestion(exp.id)" icon="fa fa-plus">
                     <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
                     </button>
                 </div>
