@@ -25,7 +25,7 @@ class ExperimentView(APIView):
                 response = {
                     "message" : "Similar experiment name exist."
                 }
-                return Response(response,status=status.HTTP_400_BAD_REQUEST)                
+                return Response(response,status=status.HTTP_400_BAD_REQUEST)
             if len(experiment_name) == 0 or len(experiment_name.strip()) == 0:
                 response = {
                     "message" : "Experiment name cannot be empty."
@@ -116,13 +116,13 @@ class ExperimentView(APIView):
         """pk is id of experiment."""
         try:
             experiment_instance = Experiment.objects.get(id=pk)
-            experiment_serialized = ExperimentSerialzer(experiment_instance)
+            experiment_serialized = ExperimentSerialzer(experiment_instance).data
             status_code = status.HTTP_200_OK
             response = {
                 'data' : experiment_serialized,
                 'success': True,
                 'status_code': status_code,
-                'message': 'Experiment deleted successfully.',
+                'message': 'Experiment fetched successfully.',
             }
             return Response(response, status=status_code)
         except Exception as e:
@@ -163,6 +163,7 @@ class AllEpxeriment(APIView):
             }
             return Response(response, status=status_code)
 class QuestionView(APIView):
+    """To create question."""
     def post(self,request,pk):
         """pk: id of experiment of which this question is part of."""
         try:
@@ -197,12 +198,13 @@ class QuestionView(APIView):
             return Response(response, status=status_code)
 
 class OptionView(APIView):
+    """To create options of a question."""
     def post(self,request,pk):
         try:
             option_name = request.data.get('option_name','')
             if len(option_name) == 0 or len(option_name.strip()) == 0:
                 response = {
-                    "error" : "Experiment name cannot be empty."
+                    "error" : "Option name cannot be empty."
                 }
                 return Response(response,status=status.HTTP_400_BAD_REQUEST)
             question_instance = Question.objects.get(id=pk)
@@ -217,6 +219,92 @@ class OptionView(APIView):
                 'success': True,
                 'status_code': status_code,
                 'message': 'Option created successfully',
+            }
+            return Response(response, status=status_code)
+        except Exception as e:
+            logger.error(Error_Occured)
+            logger.exception("message")
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                # 'data':e,
+                'succes': 'False',
+                'status_code': status_code,
+            }
+            return Response(response, status=status_code)
+
+class DoExperimentView(APIView):
+    """To get experiment by there name, and to submit response"""
+    def get(self,request,key):
+        """key: is name of the experiment.
+        This route is to get experiment by there name."""
+        try:
+            
+            experiment_name_check = key.strip()
+            experiment_name_check = experiment_name_check.replace('-',' ')
+            experiment_name_check = experiment_name_check.lower()
+            response = {}
+            if Experiment.objects.filter(experiment_name__icontains=experiment_name_check):
+                experiment_instance = Experiment.objects.filter(experiment_name__icontains=experiment_name_check)
+                experiment_serialized = ExperimentSerialzer(experiment_instance,many=True).data
+                for i,experiment in enumerate(experiment_serialized):
+                    for question in experiment['questions']:
+                        question['answer'] = ''
+                status_code = status.HTTP_200_OK
+                response = {
+                'data' : experiment_serialized,
+                'success': True,
+                'status_code': status_code,
+                'message': 'Experiment fetched successfully.',
+                }
+            else:
+                response = {
+                    "message" : " Experiment does not exist."
+                }
+                return Response(response,status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(response, status=status_code)
+        except Exception as e:
+            logger.error(Error_Occured)
+            logger.exception("message")
+            status_code = status.HTTP_400_BAD_REQUEST
+            response = {
+                # 'data':e,
+                'succes': 'False',
+                'status_code': status_code,
+            }
+            return Response(response, status=status_code)
+
+    def post(self,request,pk):
+        """pk is id of experiment.
+        This method is to submit response of experiment."""
+        try:
+            experiment_response = request.data.get('response','')
+            experiment_instance = Experiment.objects.get(id=pk)
+            for response in experiment_response[0]['questions']:
+                answer_instance = Answer()
+                answer_instance.experiment_id = experiment_instance
+                question_instance = Question.objects.get(id=response['id'])
+                answer_instance.question_id = question_instance
+                if response['question_type'] == 2:
+                    option_instance = Options.objects.get(id=response['answer'])
+                    answer_instance.answer = option_instance.option_name
+                else:
+                    answer_instance.answer = response['answer']
+                answer_instance.save()
+
+                if response['question_type'] == 2:
+                    option_instance = Options.objects.get(id=response['answer'])
+                    answer_option_instance = OptionAnswer()
+                    answer_option_instance.option_id = option_instance
+                    answer_option_instance.answer_id = answer_instance
+                    answer_option_instance.save()
+            experiment_instance_serialized = ExperimentSerialzer(experiment_instance).data
+            status_code = status.HTTP_200_OK
+            response = {
+                'data': experiment_instance_serialized,
+                'success': 'True',
+                'status_code': status_code,
+                'message': 'Response submitted.'
             }
             return Response(response, status=status_code)
         except Exception as e:

@@ -19,6 +19,14 @@ path('deleteExperiment/<int:pk>',views.ExperimentView.as_view()
 path('getExperiment/<int:pk>',views.ExperimentView.as_view()
 ,name='getExperiment'),
 
+# To get experiment by its name.
+path('getExperimentByName/<slug:key>',views.DoExperimentView.as_view()
+,name='getExperimentByName'),
+
+# Experiment response.
+path('experimentResponse/<int:pk>',views.DoExperimentView.as_view()
+,name='getExperimentByName'),
+
 # To add question to an experiment.
 path('addQuestion/<int:pk>',views.QuestionView.as_view()),
 

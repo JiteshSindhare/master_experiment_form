@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/service/data.service';
-import { MessageService } from 'primeng-lts';
+import { MessageService, ConfirmationService } from 'primeng-lts';
 
 @Component({
   selector: 'app-create-experiment-form',
   templateUrl: './create-experiment-form.component.html',
-  styleUrls: ['./create-experiment-form.component.scss']
+  styleUrls: ['./create-experiment-form.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class CreateExperimentFormComponent implements OnInit {
 
@@ -74,9 +75,8 @@ export class CreateExperimentFormComponent implements OnInit {
         'question':'',
         'type' : ''
       }];
-      console.log('experiment structurew',this.experimentStruct);
+      this.messageService.add({ severity: 'success', summary: response.message });
     },(error)=>{
-      console.log('error is',error,error.error,error.error.message);
       this.messageService.add({ severity: 'error', summary: error.error.message });
     })
 
@@ -97,30 +97,15 @@ export class CreateExperimentFormComponent implements OnInit {
       type: this.selectedValue
     }
     this.dataService.addQuestion(questionData,expId).subscribe((response)=>{
-      console.log('resposne after adding question',response);
-      console.log('experiment is',this.experiment);
       this.experiment[0]['questions'].push(response.data);
       this.questions.push(response.data);
+      this.messageService.add({ severity: 'success', summary: response.message });
     },(error) => {
       // const responseError = this.dataService.handleError(error);
       this.messageService.add({ severity: 'error', summary: error });
     });
     this.newQues = '';
     if (this.selectedValue == '0' || this.selectedValue == '1'){
-      // this.questions.push(this.newQues);
-      
-      // const questionData = {
-      //   question : this.newQues,
-      //   type: this.selectedValue
-      // }
-      // this.dataService.addQuestion(questionData,expId).subscribe((response)=>{
-      //   console.log('resposne after adding question',response);
-      //   console.log('experiment is',this.experiment);
-      //   this.experiment[0]['questions'].push(response.data);
-      //   this.questions.push(response.data);
-      // },(error) => {
-      //   this.messageService.add({ severity: 'error', summary: error });
-      // });
       this.newQues = '';
     }else if(this.selectedValue == '2'){
       this.questions.push(this.options);
@@ -140,6 +125,7 @@ export class CreateExperimentFormComponent implements OnInit {
     this.dataService.addOption(id,optionData).subscribe((response)=>{
       console.log(response);
       this.experiment[0].questions[j].options.push(response.data);
+      this.messageService.add({ severity: 'success', summary: response.message });
     },(error) => {
       // const responseError = this.dataService.handleError(error);
       this.messageService.add({ severity: 'error', summary: error });

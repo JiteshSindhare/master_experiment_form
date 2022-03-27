@@ -25,6 +25,7 @@ import { ExperimentComponent } from './components/experiment/experiment.componen
 import { ManageExperimentComponent } from './components/manage-experiment/manage-experiment.component';
 import { TopBarComponent } from './tiles/top-bar/top-bar.component';
 import { MenuComponent } from './tiles/menu/menu.component';
+import { ThankYouComponent } from './tiles/thank-you/thank-you.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MenuComponent } from './tiles/menu/menu.component';
     ManageExperimentComponent,
     TopBarComponent,
     MenuComponent,
+    ThankYouComponent,
   ],
   imports: [
     BrowserModule,

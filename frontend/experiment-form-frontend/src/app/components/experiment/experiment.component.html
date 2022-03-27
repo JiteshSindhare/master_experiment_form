@@ -1,1 +1,110 @@
-<p>experiment works!</p>
+<div class="content-section implementation">
+    <p-toast [style]="{ marginTop: '40px' }"></p-toast>
+</div>
+  <!--Start Confirm dialogue -->
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+  <!-- End -->
+<br>
+<div *ngIf="noExperimentSelected === true" class="grid justify-content-center">
+  <p-dropdown [options]="experimentOptions"  optionLabel="name" [(ngModel)]="selectedExperiment"
+  (onChange)="getExperimentById($event.value)">
+  </p-dropdown>
+</div>
+<!-- <select name="selectExperiment" (change)="getExperimentById($event.value)" class="form-control"
+ required>
+  <option value="">
+    -- Select Experiment --
+  </option>
+  <option *ngFor="let exper of experimentOptions,index as i" [value]="exper.id">
+    {{exper.experiment_name}}
+  </option>
+</select> -->
+<div class="col-offset-1 col-10 justify-content-center" *ngFor="let exp of experiment ; let i = index">
+    <!-- If experiment is disabled -->
+    <p-card *ngIf="exp.status == 0">
+        <div class="grid justify-content-center">
+            <span class="col-6 " style="text-align: center;">
+                <b> This experiment is inactive.</b>
+            </span>
+        </div>
+    </p-card>
+
+    <p-card class="col-10" *ngIf="exp.status === 1">
+        <div class="grid" >
+            <b>Experiment name:</b>
+            <span class="col-1"></span>
+            <input
+            style="text-align: center;"
+            class="col-4 md-4 sm-4"
+            type="text"
+            name="createExperiment"
+            [(ngModel)]="exp.experiment_name"
+            pInputText
+            disabled
+            />
+        </div>
+
+        <p-card>
+            <div *ngFor="let quest of exp.questions ; let j = index">
+                <div class="grid" >
+                    <div class="col-12 md-8 sm-6">
+                        <b>{{j+1}} </b>&nbsp;
+                        <input 
+                        class="col-10 md-8 sm-6"
+                        type="text"
+                        [name]="'quest'+j"
+                        [(ngModel)]="exp.questions[j].question"
+                        pInputText
+                        disabled
+                        />
+                        <div *ngIf="exp.questions[j].question_type != 2" class="col-10 md-8 sm-6">
+                        <b>Response:&nbsp;&nbsp;</b>
+                            <input 
+                            class="col-8 md-8 sm-6"
+                            type="text"
+                            [name]="'quest'+j"
+                            [(ngModel)]="exp.questions[j].answer"
+                            pInputText
+                            />
+                        </div>
+                        <!-- optional question -->
+                        <div *ngIf="exp.questions[j].question_type== 2" class="col-8 md-6 sm-4">
+                            <div class="grid" *ngFor = "let option of exp.questions[j].options ; let k = index">
+                                <div class="col-offset-1 col-2 md-2 sm-1">
+                                    &nbsp; &nbsp;
+                                    <p-radioButton [name]="'groupname'+k" [value]="exp.questions[j].options[k].id" [(label)]="exp.questions[j].options[k].option_name"  [(ngModel)]="exp.questions[j].answer">
+                                        <label >{{exp.questions[j].options[k].option_name}}</label>
+                                    </p-radioButton>&nbsp;
+                                    </div>
+                            </div>
+                        </div>
+                        <!-- End optional question -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid justify-content-end">
+                <div class="col-1">
+                    <button
+                    pButton
+                    (click)="submitExperiment(exp.id)"
+                    label="Submit"
+                    class="btn btn-link"
+                    type="button">
+                    </button>
+                </div>
+            </div>
+        </p-card>
+        <!-- <div class="grid justify-content-end">
+            <div class="col-1">
+                <button
+                pButton
+                (click)="submitExperiment(exp.id)"
+                label="Submit"
+                class="btn btn-link"
+                type="button">
+                </button>
+            </div>
+        </div> -->
+    </p-card>
+</div>

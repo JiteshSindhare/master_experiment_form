@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:  
+      POSTGRES_HOST_AUTH_METHOD: trust
+  web:
+    build: .
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+     
+    volumes:
+      - .:/experimentform
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  angular-ui:
+    build:
+      context: ../frontend/experiment-form-frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    container_name: angular-ui
+    volumes:
+    - /usr/src/app/app-ui/node_modules

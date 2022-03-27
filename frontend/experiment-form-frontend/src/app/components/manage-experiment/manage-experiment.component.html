@@ -3,6 +3,10 @@
     <p-toast [style]="{ marginTop: '40px' }"></p-toast>
   </div>
 
+<!--Start Confirm dialogue -->
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<!-- End -->
+
 <p-table #dt 
 [value]="experiments" 
 dataKey="id" 
@@ -24,12 +28,12 @@ dataKey="id"
 
 <ng-template pTemplate="header">
   <tr>
-    <th scope="col-1 md-1 sm-1" >S.No</th>
+    <th style="width:4em" >S.No</th>
 
-    <th >
+    <th style="width:36em">
       Experiment name
     </th>
-    <th scope="col-1 md-1 sm-1" >
+    <th  style="width:40em">
       Status
     </th>
     <th scope="col" >Action</th>
@@ -38,22 +42,24 @@ dataKey="id"
 <ng-template pTemplate="body" let-rowData let-i="rowIndex">
   <tr [class.row-danger]="rowData.status==0">
     <td>
-      {{ i + 1 }}
+      <b>{{ i + 1 }}</b>
     </td>
     <td><b>{{ rowData.experiment_name }}</b></td>
-    <td><b>
-        {{rowData.status == 1 ?
-        'Active' : 'Disabled' }}
-        </b>
-        &nbsp;
-        <button pButton type="button" label="Change status" class="btn btn-danger"
-        (click)="toggleExperimentStatus(rowData.id)" >
-        </button>
-    </td>
     <td>
-        <button pButton type="button" label="Delete" class="btn btn-danger"
-            (click)="deleteExperiment(rowData.id)">
-            <em class="fa fa-trash"></em>
+        <div class="flex justify-content-between">
+          <b>
+          {{rowData.status == 1 ?
+          'Active' : 'Disabled' }}
+          </b>
+          &nbsp;
+          <button pButton type="button" label="Change status" class="btn btn-danger"
+          (click)="toggleExperimentStatus(rowData.id)" >
+          </button>
+      </div>
+    </td>
+    <td class="flex justify-content-center">
+        <button pButton type="button" class="ui-button-danger"
+            (click)="deleteExperiment(rowData.id)" icon="fa fa-trash">
         </button>
         &nbsp;
     </td>

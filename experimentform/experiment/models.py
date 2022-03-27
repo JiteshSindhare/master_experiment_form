@@ -27,5 +27,5 @@ class Answer(models.Model):
 
 class OptionAnswer(models.Model):
     id = models.AutoField(primary_key=True)
-    option_name = models.CharField(max_length=250)
+    option_id = models.ForeignKey(Options,on_delete=models.CASCADE,related_name='selected_option_answer')
     answer_id = models.ForeignKey(Answer,on_delete=models.CASCADE,related_name='selected_option')

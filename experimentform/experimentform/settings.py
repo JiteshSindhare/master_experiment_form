@@ -97,8 +97,13 @@ WSGI_APPLICATION = 'experimentform.wsgi.application'
 DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.postgresql',
+            # 'NAME': 'postgres',
+            # 'USER': 'postgres',
+            # 'PASSWORD': 'postgres',
+            # 'HOST': 'db',
+            # 'PORT': '5432',
             'NAME': env('DB_NAME'),
-            'USER': env('USER'),
+            'USER': USER,
             'PASSWORD': env('PASSWORD'),
             'HOST': env('HOST'),
             'PORT': '5432',

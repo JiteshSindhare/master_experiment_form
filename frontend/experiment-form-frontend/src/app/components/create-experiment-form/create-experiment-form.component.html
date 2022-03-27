@@ -2,9 +2,10 @@
 <br>
 <div class="content-section implementation">
   <p-toast [style]="{ marginTop: '40px' }"></p-toast>
-  <!-- <p-toast [style]="{ marginTop: '40px' }" styleClass="custom-toast" key="custom" position="top-left" key="tl"> -->
-  <!-- </p-toast> -->
 </div>
+<!--Start Confirm dialogue -->
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<!-- End -->
 
 
 <div class="grid justify-content-center">
@@ -34,14 +35,13 @@
         disabled
         />
 
-        <button
+        <!-- <button
         (click)="deleteExperiment(exp.id)"
         title="Delete Experiment"
         class="btn btn-link"
-        type="button"
-        >
+        type="button">
             <em class="fa fa-trash text-maroon"></em>
-        </button>
+        </button> -->
     </div>
     <p-card>
         <div *ngFor="let quest of exp.questions ; let j = index">
@@ -97,7 +97,7 @@
     </p-card>
 
     <div class="ui-fluid">
-        <p-card>
+        <p-card >
         <p-header>
             <!-- Add questions -->
         </p-header>

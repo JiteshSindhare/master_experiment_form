@@ -73,4 +73,22 @@ export class DataService {
       { headers }
     );
   }
+
+  getExperimentByName(name){
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.get<any>(
+      this.backendRoute+'/api/getExperimentByName/'+name,
+      { headers }
+    );
+  }
+  submitExperimentResponse(id,data){
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post<any>(
+      this.backendRoute+'/api/experimentResponse/'+id,
+      data,
+      { headers }
+    );
+  }
 }
