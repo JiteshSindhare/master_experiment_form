@@ -17,6 +17,7 @@ import {CardModule} from 'primeng-lts/card';
 import { MessageService } from 'primeng-lts/api';
 import { MessageModule } from 'primeng-lts/message';
 import { HttpClientModule } from '@angular/common/http';
+import { TableModule } from 'primeng-lts/table';
 
 import { AppComponent } from './app.component';
 import { CreateExperimentFormComponent } from './components/create-experiment-form/create-experiment-form.component';
@@ -50,7 +51,8 @@ import { MenuComponent } from './tiles/menu/menu.component';
     PanelModule,
     InputTextareaModule,
     CardModule,
-    HttpClientModule
+    HttpClientModule,
+    TableModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

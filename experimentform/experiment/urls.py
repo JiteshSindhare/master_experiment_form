@@ -9,7 +9,7 @@ urlpatterns = [
 path('addExperiment',views.ExperimentView.as_view()
 ,name='addExperiment'),
 
-path('toggleExperimentStatus',views.ExperimentView.as_view()
+path('toggleExperimentStatus/<int:pk>',views.ExperimentView.as_view()
 ,name='addExperiment'),
 
 path('deleteExperiment/<int:pk>',views.ExperimentView.as_view()
@@ -21,6 +21,9 @@ path('getExperiment/<int:pk>',views.ExperimentView.as_view()
 
 # To add question to an experiment.
 path('addQuestion/<int:pk>',views.QuestionView.as_view()),
+
+# To add option to a question.
+path('addOption/<int:pk>',views.OptionView.as_view()),
 
 #To get all experiments.
 path('getAllExperiments',views.AllEpxeriment.as_view())

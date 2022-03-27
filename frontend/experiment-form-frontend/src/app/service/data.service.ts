@@ -23,7 +23,7 @@ export class DataService {
     let headers: HttpHeaders = new HttpHeaders();
     // headers = headers.append('Content-Type', 'application/json');
     return this.http.delete<any>(
-      '/api/deleteExperiment'+id,
+      this.backendRoute+'/api/deleteExperiment/'+id,
       { headers }
     );
   }
@@ -31,8 +31,8 @@ export class DataService {
   getExperiment(id){
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append('Content-Type', 'application/json');
-    return this.http.delete<any>(
-      '/api/getExperiment'+id,
+    return this.http.get<any>(
+      this.backendRoute+'/api/getExperiment/'+id,
       { headers }
     );
   }
@@ -42,6 +42,33 @@ export class DataService {
     headers = headers.append('Content-Type', 'application/json');
     return this.http.post<any>(
       this.backendRoute+'/api/addQuestion/'+id,
+      data,
+      { headers }
+    );
+  }
+
+  getAllExperiments(){
+    let headers: HttpHeaders = new HttpHeaders();
+    return this.http.get<any>(
+      this.backendRoute+'/api/getAllExperiments',
+      { headers }
+    );
+  }
+
+  changeExperimentStatus(id){
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.put<any>(
+      this.backendRoute+'/api/toggleExperimentStatus/'+id,
+      { headers }
+    );
+  }
+
+  addOption(id,data){
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post<any>(
+      this.backendRoute+'/api/addOption/'+id,
       data,
       { headers }
     );

@@ -23,6 +23,7 @@ export class CreateExperimentFormComponent implements OnInit {
   experimentName:string;
   experimentStruct = {};
   questionOfOption: string;
+  dummy:string;
   questionType = {
     1:'single',
     2:'multi',
@@ -66,17 +67,19 @@ export class CreateExperimentFormComponent implements OnInit {
       response.data['newChild'] = newChild;
       response.data['questions'] = [];
       this.experiment.push(response.data);
+      this.name = this.experimentName;
+      this.experimentStruct['name'] = this.experimentName;
+      this.experimentStruct['childs'] = [1,2,3,];
+      this.experimentStruct['newChild'] = [{
+        'question':'',
+        'type' : ''
+      }];
+      console.log('experiment structurew',this.experimentStruct);
     },(error)=>{
-      this.messageService.add({ severity: 'error', summary: error });
+      console.log('error is',error,error.error,error.error.message);
+      this.messageService.add({ severity: 'error', summary: error.error.message });
     })
-    this.name = this.experimentName;
-    this.experimentStruct['name'] = this.experimentName;
-    this.experimentStruct['childs'] = [1,2,3,];
-    this.experimentStruct['newChild'] = [{
-      'question':'',
-      'type' : ''
-    }];
-    console.log('experiment structurew',this.experimentStruct);
+
   }
 
   deleteExperiment(id){
@@ -89,22 +92,35 @@ export class CreateExperimentFormComponent implements OnInit {
   }
 
   createQuestion(expId){
+    const questionData = {
+      question : this.newQues,
+      type: this.selectedValue
+    }
+    this.dataService.addQuestion(questionData,expId).subscribe((response)=>{
+      console.log('resposne after adding question',response);
+      console.log('experiment is',this.experiment);
+      this.experiment[0]['questions'].push(response.data);
+      this.questions.push(response.data);
+    },(error) => {
+      // const responseError = this.dataService.handleError(error);
+      this.messageService.add({ severity: 'error', summary: error });
+    });
+    this.newQues = '';
     if (this.selectedValue == '0' || this.selectedValue == '1'){
       // this.questions.push(this.newQues);
       
-      const questionData = {
-        question : this.newQues,
-        type: this.selectedValue
-      }
-      this.dataService.addQuestion(questionData,expId).subscribe((response)=>{
-        console.log('resposne after adding question',response);
-        console.log('experiment is',this.experiment);
-        this.experiment[0]['questions'].push(response.data);
-        this.questions.push(response.data);
-      },(error) => {
-        // const responseError = this.dataService.handleError(error);
-        this.messageService.add({ severity: 'error', summary: error });
-      });
+      // const questionData = {
+      //   question : this.newQues,
+      //   type: this.selectedValue
+      // }
+      // this.dataService.addQuestion(questionData,expId).subscribe((response)=>{
+      //   console.log('resposne after adding question',response);
+      //   console.log('experiment is',this.experiment);
+      //   this.experiment[0]['questions'].push(response.data);
+      //   this.questions.push(response.data);
+      // },(error) => {
+      //   this.messageService.add({ severity: 'error', summary: error });
+      // });
       this.newQues = '';
     }else if(this.selectedValue == '2'){
       this.questions.push(this.options);
@@ -112,12 +128,22 @@ export class CreateExperimentFormComponent implements OnInit {
     }
   }
 
-  createQuestionForOption(){
-
+  createQuestionForOption(expId){
   }
 
-  createOption(){
-    
+  createOption(id,j){
+    // id is id of question which option we want to add.
+    //  j is index of question in which option is getting added.
+    const optionData = {
+      option_name : this.newOption
+    }
+    this.dataService.addOption(id,optionData).subscribe((response)=>{
+      console.log(response);
+      this.experiment[0].questions[j].options.push(response.data);
+    },(error) => {
+      // const responseError = this.dataService.handleError(error);
+      this.messageService.add({ severity: 'error', summary: error });
+    });
     this.options.push(this.newOption);
     this.newOption = '';
   }

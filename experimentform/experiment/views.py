@@ -18,9 +18,17 @@ class ExperimentView(APIView):
     def post(self,request):
         try:
             experiment_name = request.data.get("name",'')
+            experiment_name_check = experiment_name.strip()
+            # experiment_name_check = experiment_name_check.replace('-','')
+            # experiment_name_check = experiment_name_check.lower()
+            if Experiment.objects.filter(experiment_name__icontains=experiment_name_check):
+                response = {
+                    "message" : "Similar experiment name exist."
+                }
+                return Response(response,status=status.HTTP_400_BAD_REQUEST)                
             if len(experiment_name) == 0 or len(experiment_name.strip()) == 0:
                 response = {
-                    "error" : "Experiment name cannot be empty."
+                    "message" : "Experiment name cannot be empty."
                 }
                 return Response(response,status=status.HTTP_400_BAD_REQUEST)
 
@@ -131,14 +139,14 @@ class ExperimentView(APIView):
 class AllEpxeriment(APIView):
     def get(self,request):
         try:
-            experiment_instance = Experiment.objects.all()
+            experiment_instance = Experiment.objects.all().order_by('id')
             if Experiment.objects.all().__len__ == 1:
                 experiment_serialized = ExperimentSerialzer(experiment_instance)
             else:   
                 experiment_serialized = ExperimentSerialzer(experiment_instance,many=True)
             status_code = status.HTTP_200_OK
             response = {
-                'data' : experiment_serialized,
+                'data' : experiment_serialized.data,
                 'success': True,
                 'status_code': status_code,
                 'message': 'Experiment fetched successfully.',
@@ -192,6 +200,11 @@ class OptionView(APIView):
     def post(self,request,pk):
         try:
             option_name = request.data.get('option_name','')
+            if len(option_name) == 0 or len(option_name.strip()) == 0:
+                response = {
+                    "error" : "Experiment name cannot be empty."
+                }
+                return Response(response,status=status.HTTP_400_BAD_REQUEST)
             question_instance = Question.objects.get(id=pk)
             options_instance = Options()
             options_instance.option_name = option_name
