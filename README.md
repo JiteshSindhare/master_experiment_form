@@ -6,6 +6,12 @@
     No need to setup db either, docker compose is taking care of that.
     I have kept dbname,user,password,host simple and not hidden in .env so it will be
     easy to replicate with compose on the go.
+
+Before running include a .env file inside directory ./experimentform/experimentform/.env
+with values: 
+
+        SECRET_KEY=KEY_PROVIDED_IN_MAIL
+
 To run using docker go to directory ./experimentform/docker-compose.yaml
 <ol>
 <li>run command: docker-compose build</li>

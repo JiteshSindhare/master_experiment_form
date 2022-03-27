@@ -22,10 +22,10 @@ env = environ.Env(
 
 environ.Env.read_env()
 
-DB_NAME = env('DB_NAME')
-USER = env('USERNAME')
-PASSWORD = env('PASSWORD')
-HOST = env('HOST')
+# DB_NAME = env('DB_NAME')
+# USER = env('USERNAME')
+# PASSWORD = env('PASSWORD')
+# HOST = env('HOST')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
