@@ -20,6 +20,18 @@ To run using docker go to directory ./experimentform/docker-compose.yaml
 
 In browser goTo: <http://localhost:4200>
 
+### Overview of pages:-
+<ol>
+<li>Create experiment: page is to create new survery/experiment.</li>
+<li>Manage: This page is to delete or toggle status of existing new survery/experiment </li>
+<li>Experiment: This page is to register response of existing survery/experiment:
+    If you go to this page by clicking from top bar, there will be a drop down of existing experiments to select from.
+    Else you can type name of experiment with 'space' replaced by '-' in this route like:
+    For experiment name: new order
+    http://localhost:4200/experiment/:new-order
+ </li>
+</ol>
+
 ### Note:-
 For now experiment name should only contain alphabet and spaces (no special symbols).
 I reckon no validation while submitting forms yet.
