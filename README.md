@@ -20,6 +20,7 @@ To run using docker. in parent directory.
 
 In browser goTo: <http://localhost:4200>
 
+
 ### Overview of pages:-
 <ol>
 <li>Create experiment: page is to create new survery/experiment.</li>
@@ -33,8 +34,10 @@ In browser goTo: <http://localhost:4200>
 </ol>
 
 ### Note:-
-For now experiment name should only contain alphabet and spaces (no special symbols).
+>For now experiment name should only contain alphabet and spaces (no special symbols).
 I reckon no validation while submitting forms yet.
+
+>CORS is configured to run only in localhost.
 
 ### Things implemented:-
 Route/page to create experiment.
