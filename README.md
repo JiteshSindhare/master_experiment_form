@@ -12,7 +12,7 @@ with values:
 
         SECRET_KEY=KEY_PROVIDED_IN_MAIL
 
-To run using docker go to directory ./experimentform/docker-compose.yaml
+To run using docker. in parent directory.
 <ol>
 <li>run command: docker-compose build</li>
 <li>run command: docker-compose up</li>

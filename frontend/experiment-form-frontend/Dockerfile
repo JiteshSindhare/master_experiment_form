@@ -2,16 +2,12 @@ FROM node:12-alpine
 
 WORKDIR /app/app-ui
 
-ADD package*.json ./app/app-ui
+# copy contents of local directory inside container working directory
+COPY . ./
 
-# RUN npm cache verify
+# installing angular cli globally to be able to use angular cli commands.
+RUN npm install -g @angular/cli@9.0.4 && npm install
 
-RUN npm install -g @angular/cli@9.0.4
-
-RUN npm install -g
-
-ADD . /app/app-ui
-    
 EXPOSE 4200
 
 # CMD ng serve -o --port 4201
