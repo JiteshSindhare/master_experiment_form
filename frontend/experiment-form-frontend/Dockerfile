@@ -8,7 +8,7 @@ ADD package*.json ./app/app-ui
 
 RUN npm install -g @angular/cli@9.0.4
 
-RUN npm install
+RUN npm install -g
 
 ADD . /app/app-ui
     
